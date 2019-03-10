@@ -15,7 +15,7 @@ public class Inverse_array {
 		
 
 	}
-
+	
 	public static int[] inverse(int arr[]) {
 		int temp[];
 		temp = new int[arr.length];
