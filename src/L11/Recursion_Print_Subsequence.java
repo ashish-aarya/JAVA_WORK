@@ -1,10 +1,15 @@
 package L11;
 
+import java.util.Scanner;
+
 public class Recursion_Print_Subsequence {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		printSS("abc","");
+		System.out.println("Enter");
+		Scanner scr=new Scanner (System.in);
+		String sc=scr.next() ;
+		printSS(sc,"");
 	}
 
 	public static void printSS(String qus, String ans) {
