@@ -4,7 +4,7 @@ public class Recursion_Print_MazePath {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		printMazePath("", 0, 0, 2, 2);
+		printMazePath("", 0, 0, 3, 3);
 	}
 
 	public static void printMazePath(String ans, int cr, int cc, int er, int ec) {
