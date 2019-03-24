@@ -29,7 +29,7 @@ public class OOPS_NextGreater_cpx_n {
 //		DynamicStack ds = new DynamicStack();
 //		// int[] ans=new int[ar.length];
 //		for (int i = 0; i < ar.length; i++) {
-//			while (!ds.isempty() && ar[i] > ar[ds.pop()]) {
+//			while (!ds.isempty() && ar[i] > ar[ds.peek()]) {
 //
 //			}
 //			ds.push(i);
