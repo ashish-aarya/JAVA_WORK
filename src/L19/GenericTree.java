@@ -1,6 +1,7 @@
 package L19;
 
 import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 public class GenericTree {
 	Scanner scr = new Scanner(System.in);
@@ -141,7 +142,7 @@ public class GenericTree {
 
 	private void printAtLevels(Node node, int level, int cl) {
 		if (cl == level)
-			System.out.println(node.data);
+			System.out.print(node.data + " ");
 		for (Node child : node.children) {
 			printAtLevels(child, level, cl + 1);
 		}
@@ -183,4 +184,95 @@ public class GenericTree {
 		System.out.println();
 
 	}
+
+	public void LevelOrderLineWise() {
+		LinkedList<Node> Primary = new LinkedList<>();
+		LinkedList<Node> Helper = new LinkedList<>();
+		Primary.addLast(this.root);
+		while (!Primary.isEmpty()) {
+			Node rn = Primary.removeFirst();
+			System.out.print(rn.data + " ");
+			for (Node child : rn.children)
+				Helper.addLast(child);
+			if (Primary.isEmpty()) {
+				System.out.println();
+				Primary = Helper;
+				Helper = new LinkedList<>();
+			}
+		}
+
+	}
+
+	public void LevelOrderZZ() {
+		int count = 0;
+		LinkedList<Node> stack = new LinkedList<>();
+		LinkedList<Node> queue = new LinkedList<>();
+		queue.addLast(this.root);
+		while (!queue.isEmpty()) {
+			Node rn = queue.removeFirst();
+			System.out.print(rn.data + " ");
+			if (count % 2 == 0) {
+				for (Node child : rn.children)
+					stack.addFirst(child);
+			} else {
+				for (int i = rn.children.size() - 1; i >= 0; i--) {
+					stack.addFirst(rn);
+				}
+
+			}
+			if (queue.isEmpty()) {
+				count++;
+				stack = queue;
+
+			}
+		}
+	}
+
+	private class HeapMover {
+		int size = 0;
+		int max = Integer.MIN_VALUE;
+		int ht = 0;
+		boolean find = false;
+		Node prec = null;
+		Node succ = null;
+
+	}
+
+	public void multiSolver(int item) {
+		HeapMover mover = new HeapMover();
+		multiSolver(this.root, mover, 0, item);
+		System.out.println("MAX:" + mover.max);
+		System.out.println("Size:" + mover.size);
+		System.out.println("HT:" + mover.ht);
+		System.out.println("find:" + mover.find);
+		System.out.println("SUCC:" + ((mover.succ == null) ? null : mover.succ.data));
+		System.out.println("PREC:" + ((mover.prec == null) ? null : mover.prec.data));
+	}
+
+	private void multiSolver(Node node, HeapMover mover, int cl, int item) {
+		mover.size++;
+		// System.out.println(item);
+		// System.out.println(node.data);
+		if (node.data > mover.max) {
+			mover.max = node.data;
+		}
+		if (cl > mover.ht) {
+			mover.ht = cl;
+		}
+		if (mover.find == true && mover.succ == null) {
+			mover.succ = node;
+		}
+
+		if (item == node.data) {
+			mover.find = true;
+		}
+		if (mover.find == false) {
+			mover.prec = node;
+		}
+		// Node rn = new Node();
+		for (Node child : node.children) {
+			multiSolver(child, mover, cl + 1, item);
+		}
+	}
+
 }
