@@ -146,4 +146,187 @@ public class BinaryTree {
 
 	}
 
+	private class DiaPair {
+		int ht = -1;
+		int dia = 0;
+
+	}
+
+	public int diameter2() {
+		return diameter2(this.root).dia;
+	}
+
+	private DiaPair diameter2(Node node) {
+		if (node == null) {
+			DiaPair nw = new DiaPair();
+			return nw;
+		}
+		DiaPair ldp = diameter2(node.left);
+		DiaPair rdp = diameter2(node.right);
+
+		DiaPair sdp = new DiaPair();
+		sdp.ht = Math.max(ldp.ht, rdp.ht) + 1;
+
+		int ldt = ldp.dia;
+		int rdt = rdp.dia;
+		int sp = ldp.ht + rdp.ht + 2;
+		sdp.dia = Math.max(sp, Math.max(ldt, rdt));
+
+		return sdp;
+	}
+
+	public boolean isBalanced() {
+		return isBalanced(this.root);
+	}
+
+	private boolean isBalanced(Node node) {
+		if (node == null)
+			return true;
+		boolean lfs = isBalanced(node.left);
+		boolean rfs = isBalanced(node.right);
+		int lf = ht(node.left);
+		int rt = ht(node.right);
+		int cal = lf - rt;
+		if ((cal == 1 || cal == 0 || cal == -1) && lfs && rfs)
+			return true;
+		else
+			return false;
+	}
+
+	private class BalPair {
+		boolean isBalpair = true;
+		int ht = -1;
+	}
+
+	public boolean isBalanced2() {
+		return isBalanced2(this.root).isBalpair;
+	}
+
+	private BalPair isBalanced2(Node node) {
+		if (node == null)
+			return new BalPair();
+		BalPair lfs = isBalanced2(node.left);
+		BalPair rfs = isBalanced2(node.right);
+		BalPair bp = new BalPair();
+		int lh = lfs.ht;
+		int rh = rfs.ht;
+		int cal = lh - rh;
+		bp.ht = Math.max(lh, rh) + 1;
+		if ((cal == 1 || cal == 0 || cal == -1) && lfs.isBalpair && rfs.isBalpair)
+			bp.isBalpair = true;
+		else
+			bp.isBalpair = false;
+		return bp;
+	}
+
+	public int sum() {
+		return sum(this.root);
+	}
+
+	private int sum(Node node) {
+		if (node == null)
+			return 1;
+
+		int lf = sum(node.left);
+		int sf = sum(node.right);
+
+		int sum = lf + sf;
+		return sum;
+	}
+
+	public void preOrder() {
+		preOrder(this.root);
+	}
+
+	private void preOrder(Node node) {
+		// TODO Auto-generated method stub
+		if (node == null)
+			return;
+		// Node
+		System.out.print(node.data + " ");
+		// Left
+		preOrder(node.left);
+		// right
+		preOrder(node.right);
+
+	}
+
+	public void postOrder() {
+		postOrder(this.root);
+	}
+
+	private void postOrder(Node node) {
+		// TODO Auto-generated method stub
+		if (node == null)
+			return;
+		// Left
+		postOrder(node.left);
+		// right
+		postOrder(node.right);
+
+		// Node
+		System.out.print(node.data + " ");
+
+	}
+
+	public void inOrder() {
+		inOrder(this.root);
+	}
+
+	private void inOrder(Node node) {
+		// TODO Auto-generated method stub
+		if (node == null)
+			return;
+		// Left
+		inOrder(node.left);
+		// Node
+		System.out.print(node.data + " ");
+		// right
+		inOrder(node.right);
+
+	}
+
+	private class Pair {
+		Node node;
+		boolean sd;
+		boolean ld;
+		boolean rd;
+	}
+
+	public void preOrderI() {
+		LinkedList<Pair> stack = new LinkedList<>();
+		Pair ps = new Pair();
+		ps.node = this.root;
+		stack.add(ps);
+
+		while (!stack.isEmpty()) {
+
+			Pair tp = stack.peek();
+
+			if (tp.sd == false) {
+				System.out.print(tp.node.data + " ");
+				tp.sd = true;
+			} else if (tp.ld == false) {
+				Pair np = new Pair();
+				np.node = tp.node.left;
+				if (np.node != null)
+					stack.push(np);
+
+				tp.ld = true;
+
+			} else if (tp.rd == false) {
+				Pair np = new Pair();
+				np.node = tp.node.right;
+				if (np.node != null)
+					stack.push(np);
+
+				tp.rd = true;
+
+			} else {
+				stack.pop();
+			}
+
+		}
+	}
+
 }
