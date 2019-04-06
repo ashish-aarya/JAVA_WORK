@@ -9,7 +9,9 @@ public class BTClient {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		BinaryTree bt = new BinaryTree();
+		int[] pre={10,20,40,50,70,30,60};
+		int[] in={40,20,50,70,10,30,60};
+		BinaryTree bt = new BinaryTree(pre,in);
 		bt.display();
 		System.out.println(bt.size());
 		System.out.println(bt.max());
@@ -23,6 +25,7 @@ public class BTClient {
 		bt.preOrder();
 		System.out.println("");
 		bt.preOrderI();
+
 	}
 
 }

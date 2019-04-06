@@ -44,6 +44,28 @@ public class BinaryTree {
 		return nn;
 	}
 
+	public BinaryTree(int[] pre, int[] in) {
+		this.root = construct(pre, 0, pre.length - 1, in, 0, in.length - 1);
+	}
+
+	private Node construct(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
+		Node nn = new Node();
+		int si = -1;
+		if (plo > phi || ilo > ihi)
+			return null;
+		for (int i = ilo; i <= ihi; i++) {
+			if (pre[plo] == in[i])
+				si = i;
+		}
+
+		nn.data = pre[plo];
+		int nel = si - ilo;
+		nn.left = construct(pre, plo + 1, plo + nel, in, ilo, si - 1);
+		nn.right = construct(pre, plo + nel + 1, phi, in, si + 1, ihi);
+		return nn;
+
+	}
+
 	public void display() {
 		System.out.println("-------------");
 		dispaly(this.root);
