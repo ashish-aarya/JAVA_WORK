@@ -1,9 +1,6 @@
-package L23 ;
+package L24;
 
-import java.util.Comparator;
-import L24.Car;
 
-import L24.CarSpeedComparator;
 
 public class Generic_Car {
 	public static void main(String[] args) {
@@ -14,7 +11,7 @@ public class Generic_Car {
 		c[3] = new Car(1080, 10, "Greeb");
 		c[4] = new Car(140, 80, "White");
 		display(c);
-		bubble_short(c, new CarSpeedComparator());
+		bubble_short(c);
 		display(c);
 
 	}
@@ -29,18 +26,6 @@ public class Generic_Car {
 		for (int counter = 0; counter < arr.length - 1; counter++) {
 			for (int j = 0; j < arr.length - 1; j++) {
 				if (arr[j].compareTo(arr[j + 1]) > 0) {
-					t temp = arr[j];
-					arr[j] = arr[j + 1];
-					arr[j + 1] = temp;
-				}
-			}
-		}
-	}
-
-	public static <t> void bubble_short(t arr[], Comparator<t> comp) {
-		for (int counter = 0; counter < arr.length - 1; counter++) {
-			for (int j = 0; j < arr.length - 1; j++) {
-				if (comp.compare(arr[j], arr[j + 1]) > 0) {
 					t temp = arr[j];
 					arr[j] = arr[j + 1];
 					arr[j + 1] = temp;

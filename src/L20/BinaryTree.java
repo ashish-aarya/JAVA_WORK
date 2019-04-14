@@ -49,16 +49,22 @@ public class BinaryTree {
 	}
 
 	private Node construct(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
-		Node nn = new Node();
-		int si = -1;
+
 		if (plo > phi || ilo > ihi)
 			return null;
+
+		Node nn = new Node();
+		nn.data = pre[plo];
+		int si = -1;
+
 		for (int i = ilo; i <= ihi; i++) {
-			if (pre[plo] == in[i])
+			if (pre[plo] == in[i]) {
 				si = i;
+				break;
+			}
+
 		}
 
-		nn.data = pre[plo];
 		int nel = si - ilo;
 		nn.left = construct(pre, plo + 1, plo + nel, in, ilo, si - 1);
 		nn.right = construct(pre, plo + nel + 1, phi, in, si + 1, ihi);
@@ -352,9 +358,9 @@ public class BinaryTree {
 	}
 
 	private class BSTPair {
-		boolean isBST=true;;
-		int max=Integer.MIN_VALUE;
-		int min=Integer.MAX_VALUE;
+		boolean isBST = true;;
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
 	}
 
 	public boolean isTreeBST() {
@@ -370,10 +376,62 @@ public class BinaryTree {
 		BSTPair sp = new BSTPair();
 		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
 		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
-		if (lp.isBST&&rp.isBST&&node.data>lp.max&&node.data<rp.min)
-			sp.isBST=true;
-		else 
-			sp.isBST=false;
+		if (lp.isBST && rp.isBST && node.data > lp.max && node.data < rp.min)
+			sp.isBST = true;
+		else
+			sp.isBST = false;
 		return sp;
+	}
+
+	private class VOPair implements Comparable<VOPair> {
+		int data;
+		int hl;
+
+		@Override
+		public String toString() {
+			return this.data + " ";
+		}
+
+		@Override
+		public int compareTo(VOPair o) {
+			// TODO Auto-generated method stub
+			return this.hl - o.hl;
+		}
+
+	}
+
+	public void verticalOrder() {
+		HashMap<Integer, ArrayList<VOPair>> map = new HashMap<>();
+		verticalOrder(this.root, 0, 0, map);
+		ArrayList<Integer> lev = new ArrayList<>(map.keySet());
+		Collections.sort(lev);
+		for (int key : lev) {
+
+			ArrayList<VOPair> k = map.get(key);
+			Collections.sort(k);
+			System.out.print(key + "->" + k + " ");
+		}
+		// Collections.sort(list);
+		System.out.println(" ");
+		System.out.println(map);
+	}
+
+	private void verticalOrder(Node node, int vl, int hl, HashMap<Integer, ArrayList<VOPair>> map) {
+		// TODO Auto-generated method stub
+		if (node == null)
+			return;
+
+		if (!map.containsKey(vl)) {
+			ArrayList<VOPair> al = new ArrayList<>();
+			map.put(vl, al);
+		}
+		VOPair vp = new VOPair();
+		vp.data = node.data;
+		vp.hl = hl;
+
+		map.get(vl).add(vp);
+
+		verticalOrder(node.left, vl - 1, hl + 1, map);
+		verticalOrder(node.right, vl + 1, hl + 1, map);
 	}
 }

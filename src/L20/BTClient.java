@@ -8,8 +8,11 @@ public class BTClient {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int[] pre = { 10, 20, 40, 50, 70, 30, 60 };
-		int[] in = { 40, 20, 50, 70, 10, 30, 60 };
+		
+//		 int[] pre = { 10, 20, 40, 50, 70, 30, 60 };
+//		 int[] in = { 40, 20, 50, 70, 10, 30, 60 };
+		int[] pre = { 10, 20, 40, 80, 90, 120, 50, 100,110, 30, 60, 70 };
+		int[] in = { 80, 40, 120, 90, 20, 50, 100, 110, 10, 60, 30, 70 };
 		BinaryTree bt = new BinaryTree(pre, in);
 		bt.display();
 		System.out.println(bt.size());
@@ -25,6 +28,7 @@ public class BTClient {
 		System.out.println("");
 		bt.preOrderI();
 		System.out.println(bt.isTreeBST());
+		bt.verticalOrder();
 	}
 
 }
