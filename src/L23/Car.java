@@ -1,6 +1,5 @@
 package L23;
-
-public class Car  {
+public class Car implements Comparable<Car> {
 	int price;
 	int speed;
 	String colour;
@@ -17,11 +16,11 @@ public class Car  {
 		return "P" + price + "\t S " + speed + "\t C " + colour;
 	}
 
-	// @Override
-	// public int compareTo(Car o) {
-	//
-	// return this.price - o.price;
-	// // return o.speed-this.speed;
-	// // return this.colour.compareTo(o.colour);
-	// }
+	 @Override
+	 public int compareTo(Car o) {
+	
+	 return o.price - this.price;
+	 // return this.speed-o.speed;
+	 // return this.colour.compareTo(o.colour);
+	 }
 }
