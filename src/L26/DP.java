@@ -14,11 +14,18 @@ public class DP {
 		// System.out.println(boardPathDU(n, n, new int[n + 1]));
 		// System.out.println(boardPathBU(n));
 		// System.out.println(boardPathDUSE(n));
-		System.out.println(mazePathTD(0, 0, n, n, new int[n + 1][n + 2]));
-		System.out.println(mazePathBU(n, n));
-		System.out.println(mazePathBUSE(n, n));
+		// System.out.println(mazePathTD(0, 0, n, n, new int[n + 1][n + 2]));
+		// System.out.println(mazePathBU(n, n));
+		// System.out.println(mazePathBUSE(n, n));
+		String s1 = "SAT";
+		String s2 = "SUN";
+		// System.out.println(LCS(s1, s2));
+		// System.out.println(LCSTB(s1, s2, new int[s1.length() + 1][s2.length()
+		// + 1]));
+		// System.out.println(LCSBU(s1, s2));
+		System.out.println(EditDistance(s1, s2));
+		System.out.println(EditDistanceBU(s1, s2));
 	}
-	
 
 	public static int fibonacciTD(int n, int[] strg) {
 		if (n == 0 || n == 1)
@@ -175,11 +182,118 @@ public class DP {
 	public static int mazePathBUSE(int er, int ec) {
 		int[] strg = new int[ec + 1];
 		Arrays.fill(strg, 1);
-		for (int row = er-1; row >= 0; row--) {
-			for (int col = ec ; col >0; col--)
-				strg[col-1] = strg[col-1] + strg[col ];
+		for (int row = er - 1; row >= 0; row--) {
+			for (int col = ec; col > 0; col--)
+				strg[col - 1] = strg[col - 1] + strg[col];
 		}
 		return strg[0];
+	}
+
+	public static int LCS(String s1, String s2) {// Longest Common Substring
+		if (s1.length() == 0 || s2.length() == 0)
+			return 0;
+		char c1 = s1.charAt(0);
+		char c2 = s2.charAt(0);
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+		int ans;
+		if (c1 == c2) {
+			ans = LCS(ros1, ros2) + 1;
+		} else {
+			int o1 = LCS(s1, ros2);
+			int o2 = LCS(ros1, s2);
+			ans = Math.max(o1, o2);
+		}
+		return ans;
+	}
+
+	public static int LCSTB(String s1, String s2, int[][] strg) {// Longest
+																	// Common
+																	// Substring
+		if (s1.length() == 0 || s2.length() == 0)
+			return 0;
+		char c1 = s1.charAt(0);
+		char c2 = s2.charAt(0);
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		for (int row = 0; row < s1.length(); row++) {
+			for (int col = 0; col < s2.length(); col++) {
+				if (strg[row][col] != 0)
+					return strg[row][col];
+				if (c1 == c2) {
+					strg[row][col] = LCS(ros1, ros2) + 1;
+				} else {
+					int o1 = LCS(s1, ros2);
+					int o2 = LCS(ros1, s2);
+					strg[row][col] = Math.max(o1, o2);
+				}
+			}
+		}
+		return strg[0][0];
+	}
+
+	public static int LCSBU(String s1, String s2) {
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+		for (int row = s1.length() - 1; row >= 0; row--) {
+			for (int col = s2.length() - 1; col >= 0; col--) {
+				if (s1.charAt(row) == s2.charAt(col)) {
+					strg[row][col] = strg[row + 1][col + 1] + 1;
+				} else {
+					int o1 = strg[row + 1][col];
+					int o2 = strg[row][col + 1];
+					strg[row][col] = Math.max(o1, o2);
+				}
+
+			}
+		}
+		return strg[0][0];
+	}
+
+	public static int EditDistance(String s1, String s2) {
+		if (s1.length() == 0 || s2.length() == 0)
+			return Math.max(s1.length(), s2.length());
+		char c1 = s1.charAt(0);
+		char c2 = s2.charAt(0);
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+		int ans = 0;
+
+		if (c1 == c2) {
+			ans = EditDistance(ros1, ros2);
+		} else {
+			int i = EditDistance(ros1, s2);
+			int d = EditDistance(s1, ros2);
+			int r = EditDistance(ros1, ros2);
+			ans = Math.min(i, Math.min(d, r)) + 1;
+		}
+		return ans;
+
+	}
+
+	public static int EditDistanceBU(String s1, String s2) {
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+		for (int row = s1.length(); row >= 0; row--) {
+			for (int col = s2.length(); col >= 0; col--) {
+				if (row == s1.length()) {
+					strg[row][col] = s2.length() - col;
+					continue;
+				}
+				if (col == s2.length()) {
+					strg[row][col] = s1.length() - row;
+					continue;
+				}
+				if (s1.charAt(col) == s2.charAt(col))
+					strg[row][col] = strg[row + 1][col + 1];
+				else {
+					int i = strg[row + 1][col];
+					int d = strg[row][col + 1];
+					int r = strg[row + 1][col + 1];
+					strg[row][col] = Math.min(i, Math.min(d, r)) + 1;
+				}
+			}
+		}
+		return strg[0][0];
 	}
 
 }
