@@ -23,8 +23,16 @@ public class DP {
 		// System.out.println(LCSTB(s1, s2, new int[s1.length() + 1][s2.length()
 		// + 1]));
 		// System.out.println(LCSBU(s1, s2));
-		System.out.println(EditDistance(s1, s2));
-		System.out.println(EditDistanceBU(s1, s2));
+		// System.out.println(EditDistance(s1, s2));
+		// System.out.println(EditDistanceBU(s1, s2));
+		int ar[] = { 2, 3, 5, 1, 4 };
+		// System.out.println(MCM(ar, 0, ar.length - 1));
+		// System.out.println(MCMTD(ar, 0, ar.length - 1, new
+		// int[ar.length][ar.length]));
+		// System.out.println(MCMBU(ar));
+		System.out.println(WineProblem(ar, 0, ar.length - 1, 1));
+		System.out.println(WineProblemTD(ar, 0, ar.length - 1, new int[ar.length][ar.length]));
+		System.out.println(WineProblemBU(ar));
 	}
 
 	public static int fibonacciTD(int n, int[] strg) {
@@ -294,6 +302,131 @@ public class DP {
 			}
 		}
 		return strg[0][0];
+	}
+
+	public static int MCM(int[] arr, int si, int ei) {// Recursion Matrix Mulp.
+														// Min
+
+		if (si + 1 == ei)
+			return 0;
+
+		int min = Integer.MAX_VALUE;
+		for (int k = si + 1; k <= ei - 1; k++) {
+			int lf = MCM(arr, si, k);
+			int rf = MCM(arr, k, ei);
+			int sf = arr[si] * arr[ei] * arr[k];
+			int total = sf + lf + rf;
+			if (total < min) {
+				min = total;
+			}
+		}
+		return min;
+
+	}
+
+	public static int MCMTD(int[] arr, int si, int ei, int[][] strg) {// Recursion
+																		// Matrix
+																		// Mulp.
+		// Min
+
+		if (si + 1 == ei)
+			return 0;
+		if (strg[si][ei] != 0)
+			return strg[si][ei];
+		int min = Integer.MAX_VALUE;
+		for (int k = si + 1; k <= ei - 1; k++) {
+			int lf = MCMTD(arr, si, k, strg);
+			int rf = MCMTD(arr, k, ei, strg);
+			int sf = arr[si] * arr[ei] * arr[k];
+			int total = sf + lf + rf;
+			if (total < min) {
+				min = total;
+			}
+			strg[si][ei] = min;
+		}
+		return min;
+
+	}
+
+	public static int MCMBU(int[] arr) {
+		int n = arr.length;
+		int[][] strg = new int[n][n];
+		for (int slide = 1; slide <= n - 2; slide++) {
+			for (int si = 0; si < n - slide - 1; si++) {
+				int min = Integer.MAX_VALUE;
+				int ei = si + slide + 1;
+				for (int k = si + 1; k <= ei - 1; k++) {
+					int lf = strg[si][k];
+					int rf = strg[k][ei];
+					int sf = arr[si] * arr[ei] * arr[k];
+					int total = sf + lf + rf;
+					if (total < min) {
+						min = total;
+					}
+					strg[si][ei] = min;
+				}
+
+			}
+		}
+
+		// for(int[] i :strg){
+		// for(int j : i){
+		// System.out.print(j+" ");
+		// }
+		// System.out.println();
+		// }
+		return strg[0][n - 1];
+	}
+
+	public static int WineProblem(int[] arr, int si, int ei, int yr) {
+		if (si == ei)
+			return arr[si] * yr;
+		int start = WineProblem(arr, si + 1, ei, yr + 1) + arr[si] * yr;
+		int end = WineProblem(arr, si, ei - 1, yr + 1) + arr[ei] * yr;
+		int ans = Math.max(start, end);
+		return ans;
+
+	}
+
+	public static int WineProblemTD(int[] arr, int si, int ei, int[][] strg) {
+		int yr = arr.length - (ei - si + 1) + 1;
+		if (si == ei)
+			return arr[si] * yr;
+		if (strg[si][ei] != 0)
+			return strg[si][ei];
+		int start = WineProblemTD(arr, si + 1, ei, strg) + arr[si] * yr;
+		int end = WineProblemTD(arr, si, ei - 1, strg) + arr[ei] * yr;
+		int ans = Math.max(start, end);
+		strg[si][ei] = ans;
+		return strg[si][ei];
+
+	}
+
+	public static int WineProblemBU(int[] arr) {
+		int n = arr.length;
+		int[][] strg = new int[n][n];
+		for (int slide = 0; slide <= n - 1; slide++) {
+			for (int si = 0; si <= n - slide - 1; si++) {
+				int ei = si + slide;
+				int yr = arr.length - (ei - si + 1) + 1;
+				if (si == ei) {
+					strg[si][ei] = arr[ei] * yr;
+				} else {
+
+					int start = strg[si + 1][ei] + arr[si] * yr;
+					int end = strg[si][ei-1]  + arr[ei] * yr;
+					int ans = Math.max(start, end);
+					strg[si][ei] = ans;
+				}
+			}
+		}
+		
+//		for(int i[] : strg){
+//			for(int j :i){
+//				System.out.print(j + " ");
+//			}System.out.println();
+//		}
+		return strg[0][n - 1];
 	}
 
 }
